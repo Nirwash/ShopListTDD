@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ShopListTDD</string>
+    <string name="name">NAME</string>
+    <string name="_3x">3x</string>
+    <string name="price_3">Price: 3€</string>
+    <string name="todo">TODO</string>
+</resources>
