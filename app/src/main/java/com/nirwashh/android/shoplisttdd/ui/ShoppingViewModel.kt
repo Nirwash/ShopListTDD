@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nirwashh.android.shoplisttdd.data.local.ShoppingItem
 import com.nirwashh.android.shoplisttdd.data.remote.responses.ImageResponse
+import com.nirwashh.android.shoplisttdd.other.Constants.MAX_NAME_LENGTH
+import com.nirwashh.android.shoplisttdd.other.Constants.MAX_PRICE_LENGTH
 import com.nirwashh.android.shoplisttdd.other.Event
 import com.nirwashh.android.shoplisttdd.other.Resource
 import com.nirwashh.android.shoplisttdd.repositories.ShoppingRepository
@@ -42,10 +44,65 @@ class ShoppingViewModel @Inject constructor(
     }
 
     fun insertShoppingItem(name: String, amountString: String, priceString: String) {
-        //TODO
+        if (name.isEmpty() || amountString.isEmpty() || priceString.isEmpty()) {
+            _insertShoppingItemStatus.postValue(
+                Event(
+                    Resource.error(
+                        "The fields must not be empty",
+                        null
+                    )
+                )
+            )
+            return
+        }
+        if (name.length > MAX_NAME_LENGTH) {
+            _insertShoppingItemStatus.postValue(
+                Event(
+                    Resource.error(
+                        "The name of the item must not exceed $MAX_NAME_LENGTH characters",
+                        null
+                    )
+                )
+            )
+            return
+        }
+        if (priceString.length > MAX_PRICE_LENGTH) {
+            _insertShoppingItemStatus.postValue(
+                Event(
+                    Resource.error(
+                        "The price of the item must not exceed $MAX_PRICE_LENGTH characters",
+                        null
+                    )
+                )
+            )
+            return
+        }
+        val amount = try {
+            amountString.toInt()
+        } catch (e: Exception) {
+            _insertShoppingItemStatus.postValue(
+                Event(
+                    Resource.error(
+                        "Please enter a valid amount",
+                        null
+                    )
+                )
+            )
+            return
+        }
+        val shoppingItem =
+            ShoppingItem(name, amount, priceString.toFloat(), _curImageUrl.value ?: "")
+        insertShoppingItemIntoDb(shoppingItem)
+        setCurImageUrl("")
+        _insertShoppingItemStatus.postValue(Event(Resource.success(shoppingItem)))
     }
 
     fun searchForImage(searchQuery: String) {
-        //TODO
+        if (searchQuery.isEmpty()) return
+        _images.value = Event(Resource.loading(null))
+        viewModelScope.launch {
+            val response = repository.searchForImage(searchQuery)
+            _images.value = Event(response)
+        }
     }
 }
