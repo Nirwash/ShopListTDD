@@ -2,6 +2,9 @@ package com.nirwashh.android.shoplisttdd.di
 
 import android.content.Context
 import androidx.room.Room
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.nirwashh.android.shoplisttdd.R
 import com.nirwashh.android.shoplisttdd.data.local.ShoppingDao
 import com.nirwashh.android.shoplisttdd.data.local.ShoppingItemDatabase
 import com.nirwashh.android.shoplisttdd.data.remote.PixabayApi
@@ -51,4 +54,14 @@ object AppModule {
             .build()
             .create(PixabayApi::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideGlideInstance(
+        @ApplicationContext context: Context
+    ) = Glide.with(context).setDefaultRequestOptions(
+        RequestOptions()
+            .placeholder(R.drawable.ic_image)
+            .error(R.drawable.ic_image)
+    )
 }

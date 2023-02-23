@@ -44,6 +44,9 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.8.0'
+    implementation "androidx.fragment:fragment:1.5.5"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
 
 
     // Architectural Components
@@ -118,8 +121,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation 'org.mockito:mockito-core:5.1.1'
-    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.44'
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.45'
     kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.44'
     debugImplementation "androidx.fragment:fragment-testing:1.5.5"
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
 
 }
